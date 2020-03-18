@@ -13,6 +13,14 @@ const App = () => {
     blogService.getAll().then(blogs => setBlogs(blogs))
   }, [])
 
+  useEffect(() => {
+    const loggedInUser = window.localStorage.getItem("loggedInUser")
+    if (loggedInUser) {
+      const user = JSON.parse(loggedInUser)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
   const handleLogin = async event => {
     event.preventDefault()
     try {
@@ -20,6 +28,7 @@ const App = () => {
         username,
         password
       })
+      window.localStorage.setItem("loggedInUser", JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
       setUsername("")
@@ -68,18 +77,25 @@ const App = () => {
   const blogsList = blogs => {
     return blogs.map(blog => <Blog key={blog.id} blog={blog} />)
   }
+  const logout = () => {
+    setUser(null)
+    window.localStorage.clear()
+  }
   return (
     <React.Fragment>
       <Notification message={errorMessage} />
 
       {user === null ? (
         loginForm()
-      ) : (
+      ) : user ? (
         <div>
           <p>{user.name} logged in</p>
           <h2>Blogs</h2>
           <div>{blogsList(blogs)}</div>
+          <button onClick={() => logout()}>Logout</button>
         </div>
+      ) : (
+        loginForm()
       )}
     </React.Fragment>
   )
