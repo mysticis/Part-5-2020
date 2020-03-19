@@ -11,7 +11,8 @@ const App = () => {
   const [url, setUrl] = useState("")
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [messageSuccess, setMessageSuccess] = useState(true)
   const [user, setUser] = useState(null)
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs))
@@ -39,6 +40,14 @@ const App = () => {
       setTitle("")
       setAuthor("")
       setUrl("")
+      setMessageSuccess(true)
+      setMessage(
+        `A new blog ${returnedBlog.title}! by ${returnedBlog.author} added`
+      )
+      setTimeout(() => {
+        setMessage(null)
+        setMessageSuccess(null)
+      }, 5000)
     })
   }
   const handleTitle = event => setTitle(event.target.value)
@@ -59,9 +68,11 @@ const App = () => {
     } catch (exception) {
       setUsername("")
       setPassword("")
-      setErrorMessage("Invalid username and/or password!")
+      setMessageSuccess(false)
+      setMessage("Invalid username and/or password!")
       setTimeout(() => {
-        setErrorMessage(null)
+        setMessage(null)
+        setMessageSuccess(null)
       }, 5000)
     }
   }
@@ -125,7 +136,7 @@ const App = () => {
   }
   return (
     <React.Fragment>
-      <Notification message={errorMessage} />
+      <Notification message={message} messageSuccess={messageSuccess} />
 
       {user === null ? (
         loginForm()
