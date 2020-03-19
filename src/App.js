@@ -3,6 +3,9 @@ import Blog from "./components/Blog"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 import Notification from "./components/Notification"
+import LoginForm from "./components/LoginForm"
+import BlogForm from "./components/BlogForm"
+import ToggleTool from "./components/ToggleTool"
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [newBlog, setNewBlog] = useState("")
@@ -78,53 +81,30 @@ const App = () => {
   }
   const loginForm = () => {
     return (
-      <React.Fragment>
-        <h2>Log in to application</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            Username:
-            <br />
-            <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <br />
-          <div>
-            Password:
-            <br />
-            <input
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <br />
-          <button type="submit">Login</button>
-        </form>
-      </React.Fragment>
+      <ToggleTool buttonLabel="Login">
+        <LoginForm
+          handleLogin={handleLogin}
+          handleUsername={({ target }) => setUsername(target.value)}
+          handlePassword={({ target }) => setPassword(target.value)}
+          username={username}
+          password={password}
+        />
+      </ToggleTool>
     )
   }
   const blogForm = () => {
     return (
-      <React.Fragment>
-        <h3>Create New</h3>
-        <form onSubmit={addBlog}>
-          Title: <input type="text" value={title} onChange={handleTitle} />
-          <br />
-          <br />
-          Author: <input type="text" value={author} onChange={handleAuthor} />
-          <br />
-          <br />
-          Url: <input type="text" value={url} onChange={handleUrl} />
-          <br />
-          <br />
-          <button type="submit">Create</button>
-        </form>
-      </React.Fragment>
+      <ToggleTool buttonLabel="New Blog">
+        <BlogForm
+          addBlog={addBlog}
+          title={title}
+          author={author}
+          url={url}
+          handleAuthor={handleAuthor}
+          handleTitle={handleTitle}
+          handleUrl={handleUrl}
+        />
+      </ToggleTool>
     )
   }
   const blogsList = blogs => {
