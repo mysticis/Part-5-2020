@@ -11,10 +11,13 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [messageSuccess, setMessageSuccess] = useState(true)
   const [user, setUser] = useState(null)
+
+  //Get all blogs
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs))
   }, [])
 
+  //Get token from response and set in localStorage
   useEffect(() => {
     const loggedInUser = window.localStorage.getItem("loggedInUser")
     if (loggedInUser) {
@@ -23,6 +26,8 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  //Create blog function
   const addBlog = newBlogObject => {
     blogService.create(newBlogObject).then(returnedBlog => {
       console.log(blogs)
@@ -37,6 +42,25 @@ const App = () => {
       }, 5000)
     })
   }
+  //Update likes blog function
+  const updateLikes = async id => {
+    const blogToUpdate = await blogs.find(blog => blog.id === id)
+    console.log(blogToUpdate)
+    try {
+      const changedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
+      const response = await blogService.update(id, changedBlog)
+      console.log(response)
+      setBlogs(blogs.map(blog => (blog.id === id ? response : blog)))
+    } catch (error) {
+      setMessageSuccess(false)
+      setMessage(`Blog has already been removed from the server`)
+      setTimeout(() => {
+        setMessageSuccess(null)
+        setMessage(null)
+      }, 5000)
+    }
+  }
+  //Login function
   const handleLogin = async credentials => {
     try {
       const user = await loginService.login(credentials)
@@ -52,6 +76,8 @@ const App = () => {
       }, 5000)
     }
   }
+
+  //Login form
   const loginForm = () => {
     return (
       <ToggleTool buttonLabel="Login">
@@ -59,6 +85,8 @@ const App = () => {
       </ToggleTool>
     )
   }
+
+  //Blog form
   const blogForm = () => {
     return (
       <ToggleTool buttonLabel="New Blog">
@@ -66,9 +94,19 @@ const App = () => {
       </ToggleTool>
     )
   }
+
+  //List of blogs to view
   const blogsList = blogs => {
-    return blogs.map(blog => <Blog key={blog.id} blog={blog} />)
+    return blogs.map(blog => (
+      <Blog
+        key={blog.id}
+        blog={blog}
+        updateLikes={() => updateLikes(blog.id)}
+      />
+    ))
   }
+
+  //Logout function
   const logout = () => {
     setUser(null)
     window.localStorage.clear()
@@ -95,3 +133,42 @@ const App = () => {
 }
 
 export default App
+
+/*
+const updateLikes = async id => {
+    const blog = await blogs.find(blog => blog.id === id)
+    console.log(blog)
+    try {
+      const changedBlog = { ...blog, likes: blog.likes + 1 }
+      const response = await blogService.update(id, changedBlog)
+      console.log(response)
+      setBlogs(blogs.map(blog => (blog.id === id ? response : blog)))
+    } catch (error) {
+      setMessageSuccess(false)
+      setMessage(`Blog ${blog.title} has already been removed from the server`)
+      setTimeout(() => {
+        setMessageSuccess(null)
+        setMessage(null)
+      }, 5000)
+    }
+  }
+  */
+/*const updateLikes = id => {
+    const blogToUpdate = blogs.find(blog => blog.id === id)
+    console.log(blogToUpdate)
+    const changedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
+    blogService
+      .update(id, changedBlog)
+      .then(returnedBlog => {
+        console.log(returnedBlog)
+        setBlogs(blogs.map(blog => (blog.id === id ? returnedBlog : blog)))
+      })
+      .catch(error => {
+        setMessageSuccess(false)
+        setMessage(`The Blog does not exist`)
+        setTimeout(() => {
+          setMessageSuccess(null)
+          setMessage(null)
+        }, 5000)
+      })
+  }*/

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateLikes }) => {
   const [visible, setVisible] = useState(false)
   const showComponent = { display: visible ? "" : "none" }
   const toggleVisiblity = () => setVisible(!visible)
@@ -28,7 +28,12 @@ const Blog = ({ blog }) => {
           <div>{blog.url}</div>
           <div>
             Likes: {blog.likes}{" "}
-            <button style={{ cursor: `pointer` }}>Like</button>
+            <button
+              style={{ cursor: `pointer` }}
+              onClick={() => updateLikes(blog.id)}
+            >
+              Like
+            </button>
           </div>
           <div>{blog.author}</div>
         </div>
