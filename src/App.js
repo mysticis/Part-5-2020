@@ -8,12 +8,6 @@ import BlogForm from "./components/BlogForm"
 import ToggleTool from "./components/ToggleTool"
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState("")
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [url, setUrl] = useState("")
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
   const [message, setMessage] = useState(null)
   const [messageSuccess, setMessageSuccess] = useState(true)
   const [user, setUser] = useState(null)
@@ -29,20 +23,10 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-  const addBlog = event => {
-    event.preventDefault()
-    const newBlogObject = {
-      title,
-      author,
-      url
-    }
+  const addBlog = newBlogObject => {
     blogService.create(newBlogObject).then(returnedBlog => {
       console.log(blogs)
       setBlogs(blogs.concat(returnedBlog))
-      setNewBlog("")
-      setTitle("")
-      setAuthor("")
-      setUrl("")
       setMessageSuccess(true)
       setMessage(
         `A new blog ${returnedBlog.title}! by ${returnedBlog.author} added`
@@ -53,24 +37,13 @@ const App = () => {
       }, 5000)
     })
   }
-  const handleTitle = event => setTitle(event.target.value)
-  const handleAuthor = event => setAuthor(event.target.value)
-  const handleUrl = event => setUrl(event.target.value)
-  const handleLogin = async event => {
-    event.preventDefault()
+  const handleLogin = async credentials => {
     try {
-      const user = await loginService.login({
-        username,
-        password
-      })
+      const user = await loginService.login(credentials)
       window.localStorage.setItem("loggedInUser", JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
-      setUsername("")
-      setPassword("")
     } catch (exception) {
-      setUsername("")
-      setPassword("")
       setMessageSuccess(false)
       setMessage("Invalid username and/or password!")
       setTimeout(() => {
@@ -82,28 +55,14 @@ const App = () => {
   const loginForm = () => {
     return (
       <ToggleTool buttonLabel="Login">
-        <LoginForm
-          handleLogin={handleLogin}
-          handleUsername={({ target }) => setUsername(target.value)}
-          handlePassword={({ target }) => setPassword(target.value)}
-          username={username}
-          password={password}
-        />
+        <LoginForm handleLogin={handleLogin} />
       </ToggleTool>
     )
   }
   const blogForm = () => {
     return (
       <ToggleTool buttonLabel="New Blog">
-        <BlogForm
-          addBlog={addBlog}
-          title={title}
-          author={author}
-          url={url}
-          handleAuthor={handleAuthor}
-          handleTitle={handleTitle}
-          handleUrl={handleUrl}
-        />
+        <BlogForm createBlog={addBlog} />
       </ToggleTool>
     )
   }
