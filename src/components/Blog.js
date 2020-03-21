@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import jwt from "jsonwebtoken"
-
+import PropTypes from "prop-types"
 const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
   const [visible, setVisible] = useState(false)
   const showComponent = { display: visible ? "" : "none" }
@@ -58,5 +58,10 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
     </React.Fragment>
   )
 }
-
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  updateLikes: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
+}
 export default Blog
