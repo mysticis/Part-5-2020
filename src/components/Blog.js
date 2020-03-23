@@ -5,63 +5,61 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
   const [visible, setVisible] = useState(false)
   const showComponent = { display: visible ? "" : "none" }
   const toggleVisiblity = () => setVisible(!visible)
-  const token = user.token
-  const decoded = jwt.verify(token, "secretword")
-
-  const blogStyle = {
-    padding: 15,
-    border: "solid",
-    borderWidth: 2,
-    borderRadius: 5,
-    marginBottom: 5,
-    cursor: "pointer"
-  }
+  //const token = user.token
+  //const decoded = jwt.verify(token, "secretword")
 
   return (
-    <React.Fragment>
-      <div style={blogStyle}>
+    <div className="blogStyle">
+      <div>
+        {`${blog.title} by ${blog.author}`}{" "}
+        <button onClick={() => toggleVisiblity()} style={{ cursor: `pointer` }}>
+          {visible ? "Hide" : "View"}
+        </button>
+      </div>
+      <div style={showComponent}>
+        <div>{blog.url}</div>
         <div>
-          {blog.title}{" "}
+          Likes: {blog.likes}{" "}
           <button
-            onClick={() => toggleVisiblity()}
             style={{ cursor: `pointer` }}
+            onClick={() => updateLikes(blog.id)}
           >
-            {visible ? "Hide" : "View"}
+            Like
           </button>
         </div>
-        <div style={showComponent}>
-          <div>{blog.url}</div>
-          <div>
-            Likes: {blog.likes}{" "}
-            <button
-              style={{ cursor: `pointer` }}
-              onClick={() => updateLikes(blog.id)}
-            >
-              Like
-            </button>
-          </div>
-          <div>{blog.author}</div>
-          <div>
-            {blog.user === decoded.id && (
-              <div>
-                <button
-                  onClick={() => deleteBlog(blog.id)}
-                  style={{ cursor: `pointer` }}
-                >
-                  Remove
-                </button>
-              </div>
-            )}
-          </div>
+        <div>{blog.author}</div>
+        <div>
+          <button
+            onClick={() => deleteBlog(blog.id)}
+            style={{ cursor: `pointer` }}
+          >
+            Remove
+          </button>
         </div>
       </div>
-    </React.Fragment>
+    </div>
   )
 }
+
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   updateLikes: PropTypes.func.isRequired,
-  deleteBlog: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired
+  deleteBlog: PropTypes.func.isRequired
+  //user: PropTypes.object.isRequired
 }
 export default Blog
+
+/*
+<div>
+          {blog.user === decoded.id && (
+            <div>
+              <button
+                onClick={() => deleteBlog(blog.id)}
+                style={{ cursor: `pointer` }}
+              >
+                Remove
+              </button>
+            </div>
+          )}
+        </div>
+        */

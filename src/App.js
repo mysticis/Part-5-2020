@@ -141,7 +141,7 @@ const App = () => {
           blog={blog}
           updateLikes={() => updateLikes(blog.id)}
           deleteBlog={() => removeBlog(blog.id)}
-          user={user}
+          //user={user}
         />
       ))
   }
