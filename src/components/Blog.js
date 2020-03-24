@@ -21,13 +21,14 @@ const Blog = ({
         <div id="blog">
           {`${blog.title} by ${blog.author}`}
           <button
+            id="revealbutton"
             onClick={() => toggleVisiblity()}
             style={{ cursor: `pointer` }}
           >
             {visible ? "Hide" : "View"}
           </button>
         </div>
-        <div style={showComponent}>
+        <div id="hidden" style={showComponent}>
           <div>{blog.url}</div>
           <div>
             Likes: {blog.likes}{" "}

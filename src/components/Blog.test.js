@@ -26,6 +26,18 @@ describe("<Blog/>", () => {
   })
   test("should render blog title and author only by default", () => {
     const div = component.container.querySelector("#blog")
+    expect(div).toHaveTextContent(
+      "Component testing is done with react-testing-library by Raymond"
+    )
     expect(div).not.toHaveTextContent("Likes: 4")
+    expect(div).not.toHaveTextContent("testurl.com")
+  })
+  test("should reveal url and likes when view button is clicked", () => {
+    const button = component.container.querySelector("#revealbutton")
+    fireEvent.click(button)
+    const div = component.container.querySelector("#hidden")
+    expect(div).toHaveTextContent("Likes: 4")
+    expect(div).toHaveTextContent("testurl.com")
+    expect(div).toHaveTextContent("Raymond")
   })
 })
