@@ -1,0 +1,25 @@
+test("clicking the view button reveals the url and likes of the blog", () => {
+  const blog = {
+    title: "Component testing is done with react-testing-library",
+    author: "Raymond",
+    url: "testurl.com",
+    likes: 4
+  }
+  const updateLikes = () => "Likes updated"
+  const deleteBlog = () => "Blog Deleted"
+  const mockHandler = jest.fn()
+
+  const component = render(
+    <Blog
+      blog={blog}
+      updateLikes={updateLikes}
+      deleteBlog={deleteBlog}
+      toggleVisiblity={mockHandler}
+    />
+  )
+  const button = component.getByText("View")
+  fireEvent.click(button)
+  const element = component.getByText("Likes: 4")
+  expect(element).toBeDefined()
+  //expect(mockHandler.mock.calls.length).toBe(1)
+})

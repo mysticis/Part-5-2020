@@ -12,7 +12,7 @@ const App = () => {
   const [message, setMessage] = useState(null)
   const [messageSuccess, setMessageSuccess] = useState(true)
   const [user, setUser] = useState(null)
-
+  const [visible, setVisible] = useState(false)
   //Get all blogs
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs))
@@ -27,7 +27,9 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
+  //Toggle Visibility
+  const showComponent = { display: visible ? "" : "none" }
+  const toggleVisiblity = () => setVisible(!visible)
   //Create blog function
   const addBlog = async newBlogObject => {
     try {
@@ -142,6 +144,9 @@ const App = () => {
           updateLikes={() => updateLikes(blog.id)}
           deleteBlog={() => removeBlog(blog.id)}
           user={user}
+          toggleVisiblity={toggleVisiblity}
+          showComponent={showComponent}
+          visible={visible}
         />
       ))
   }
