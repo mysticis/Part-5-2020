@@ -33,6 +33,7 @@ const Blog = ({
           <div>
             Likes: {blog.likes}{" "}
             <button
+              id="like"
               style={{ cursor: `pointer` }}
               onClick={() => updateLikes(blog.id)}
             >

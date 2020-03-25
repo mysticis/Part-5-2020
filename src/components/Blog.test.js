@@ -12,13 +12,13 @@ describe("<Blog/>", () => {
       url: "testurl.com",
       likes: 4
     }
-    const updateLikes = () => "Likes updated"
+    //const updateLikes = () => "Likes updated"
     const deleteBlog = () => "Blog Deleted"
     const mockHandler = jest.fn()
     component = render(
       <Blog
         blog={blog}
-        updateLikes={updateLikes}
+        updateLikes={mockHandler}
         deleteBlog={deleteBlog}
         toggleVisiblity={mockHandler}
       />
