@@ -23,6 +23,7 @@ const LoginForm = ({ handleLogin }) => {
           Username:
           <br />
           <input
+            id="username"
             type="text"
             value={username}
             name="Username"
@@ -34,6 +35,7 @@ const LoginForm = ({ handleLogin }) => {
           Password:
           <br />
           <input
+            id="password"
             type="password"
             value={password}
             name="Password"
@@ -41,7 +43,7 @@ const LoginForm = ({ handleLogin }) => {
           />
         </div>
         <br />
-        <button type="submit" style={{ cursor: `pointer` }}>
+        <button id="login-button" type="submit" style={{ cursor: `pointer` }}>
           Login
         </button>
       </form>

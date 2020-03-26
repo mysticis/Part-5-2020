@@ -1,25 +1,18 @@
 import React, { useState } from "react"
 import jwt from "jsonwebtoken"
 import PropTypes from "prop-types"
-const Blog = ({
-  blog,
-  updateLikes,
-  deleteBlog,
-  user,
-  toggleVisiblity,
-  showComponent,
-  visible
-}) => {
-  //const showComponent = { display: visible ? "" : "none" }
-
-  //const token = user.token
-  //const decoded = jwt.verify(token, "secretword")
-
+const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
+  const [visible, setVisible] = useState(false)
+  const showComponent = { display: visible ? "" : "none" }
+  const token = user.token
+  const decoded = jwt.verify(token, "secretword")
+  const toggleVisiblity = () => setVisible(!visible)
   return (
     <React.Fragment>
       <div className="blogStyle">
         <div id="blog">
           {`${blog.title} by ${blog.author}`}
+          <br />
           <button
             id="revealbutton"
             onClick={() => toggleVisiblity()}
@@ -42,27 +35,6 @@ const Blog = ({
           </div>
           <div>{blog.author}</div>
           <div>
-            <button
-              onClick={() => deleteBlog(blog.id)}
-              style={{ cursor: `pointer` }}
-            >
-              Remove
-            </button>
-          </div>
-        </div>
-      </div>
-    </React.Fragment>
-  )
-}
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  updateLikes: PropTypes.func.isRequired,
-  deleteBlog: PropTypes.func.isRequired
-  //user: PropTypes.object.isRequired
-}
-export default Blog
-
-/*<div>
             {blog.user === decoded.id && (
               <div>
                 <button
@@ -74,4 +46,15 @@ export default Blog
               </div>
             )}
           </div>
-          */
+        </div>
+      </div>
+    </React.Fragment>
+  )
+}
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  updateLikes: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
+}
+export default Blog
