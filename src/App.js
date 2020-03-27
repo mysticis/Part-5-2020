@@ -164,7 +164,11 @@ const App = () => {
           {blogForm()}
           <h2>Blogs</h2>
           <div>{blogsList(blogs)}</div>
-          <button onClick={() => logout()} style={{ cursor: `pointer` }}>
+          <button
+            id="logout"
+            onClick={() => logout()}
+            style={{ cursor: `pointer` }}
+          >
             Logout
           </button>
         </div>

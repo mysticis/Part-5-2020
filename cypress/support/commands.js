@@ -11,12 +11,13 @@
 //
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })
-Cypress.Commands.add("login", ({ username, password }) => {
-  cy.request("POST", "http://localhost:3003/api/testing/reset", {
+Cypress.Commands.add("login", ({ username, name, password }) => {
+  cy.request("POST", "http://localhost:3003/api/users", {
     username,
+    name,
     password
   }).then(({ body }) => {
-    localStorage.setItem("BlogUser", JSON.stringify(body))
+    localStorage.setItem("loggedBlogUser", JSON.stringify(body))
     cy.visit("http://localhost:3000")
   })
 })
