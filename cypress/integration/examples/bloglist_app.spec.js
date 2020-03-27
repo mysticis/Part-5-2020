@@ -32,3 +32,22 @@ describe("Login", function() {
     cy.get("html").should("not.contain", "Saintmary logged in")
   })
 })
+
+describe("When logged in ", function() {
+  beforeEach(function() {
+    cy.request("POST", "http://localhost:3003/api/testing/reset")
+    cy.login({ username: "mary", name: "Saintmary", password: "marysecret" })
+  })
+  it("A blog can be created", function() {
+    cy.contains("Login").click()
+    cy.get("#username").type("mary")
+    cy.get("#password").type("marysecret")
+    cy.get("#login-button").click()
+    cy.contains("New Blog").click()
+    cy.get("#title").type("TestTitle")
+    cy.get("#author").type("testauthor")
+    cy.get("#url").type("testurl")
+    cy.get("#create").click()
+    cy.contains("TestTitle by testauthor")
+  })
+})
