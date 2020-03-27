@@ -2,6 +2,7 @@ describe("BlogList App", function() {
   beforeEach(function() {
     cy.request("POST", "http://localhost:3003/api/testing/reset")
     cy.login({ username: "mary", name: "Saintmary", password: "marysecret" })
+    cy.login({ username: "peter", name: "Peterson", password: "hashes" })
   })
   it("Login form is displayed by default", function() {
     cy.contains("Log in to application")
@@ -65,5 +66,35 @@ describe("When logged in ", function() {
       .get("#like")
       .click()
     cy.contains("1")
+  })
+})
+
+describe.only("When logged in", () => {
+  beforeEach(function() {
+    cy.request("POST", "http://localhost:3003/api/testing/reset")
+    cy.login({ username: "mary", name: "Saintmary", password: "marysecret" })
+    cy.login({ username: "peter", name: "Peterson", password: "hashes" })
+  })
+  it("Only users who created blogs can delete them", function() {
+    cy.contains("Login").click()
+    cy.get("#username").type("mary")
+    cy.get("#password").type("marysecret")
+    cy.get("#login-button").click()
+    cy.contains("New Blog").click()
+    cy.get("#title").type("Testtitle")
+    cy.get("#author").type("testauthor")
+    cy.get("#url").type("testurl")
+    cy.get("#create").click()
+    cy.contains("Testtitle by testauthor")
+    cy.get("#revealbutton").click()
+    cy.contains("Remove")
+    cy.get("#logout").click()
+    cy.contains("Login").click()
+    cy.get("#username").type("peter")
+    cy.get("#password").type("hashes")
+    cy.get("#login-button").click()
+    cy.contains("Testtitle by testauthor")
+    cy.get("#revealbutton").click()
+    cy.get("#remove").should("not.contain", "Remove")
   })
 })

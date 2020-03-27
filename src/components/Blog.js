@@ -38,6 +38,7 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
             {blog.user === decoded.id && (
               <div>
                 <button
+                  id="remove"
                   onClick={() => deleteBlog(blog.id)}
                   style={{ cursor: `pointer` }}
                 >
