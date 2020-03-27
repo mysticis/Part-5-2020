@@ -17,7 +17,9 @@ const ToggleTool = props => {
       <div style={showComponent}>
         {props.children}
         <br />
-        <button onClick={toggleVisiblity}>Cancel</button>
+        <button id="cancel" onClick={toggleVisiblity}>
+          Cancel
+        </button>
       </div>
     </div>
   )

@@ -21,6 +21,7 @@ Cypress.Commands.add("login", ({ username, name, password }) => {
     cy.visit("http://localhost:3000")
   })
 })
+//Create blog command
 Cypress.Commands.add("createBlog", ({ title, author, url }) => {
   cy.request({
     url: "http://localhost:3003/api/blogs",

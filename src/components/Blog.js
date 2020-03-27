@@ -9,7 +9,7 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
   const toggleVisiblity = () => setVisible(!visible)
   return (
     <React.Fragment>
-      <div className="blogStyle">
+      <div id="blogsarray" className="blogStyle">
         <div id="blog">
           {`${blog.title} by ${blog.author}`}
           <br />

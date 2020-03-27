@@ -69,7 +69,7 @@ describe("When logged in ", function() {
   })
 })
 
-describe.only("When logged in", () => {
+describe("When logged in", () => {
   beforeEach(function() {
     cy.request("POST", "http://localhost:3003/api/testing/reset")
     cy.login({ username: "mary", name: "Saintmary", password: "marysecret" })
@@ -98,3 +98,52 @@ describe.only("When logged in", () => {
     cy.get("#remove").should("not.contain", "Remove")
   })
 })
+
+describe.only("When logged in", function() {
+  beforeEach(function() {
+    cy.request("POST", "http://localhost:3003/api/testing/reset")
+    cy.login({ username: "mary", name: "Saintmary", password: "marysecret" })
+  })
+  it("Blogs with most likes are top of the list", function() {
+    cy.contains("Login").click()
+    cy.get("#username").type("mary")
+    cy.get("#password").type("marysecret")
+    cy.get("#login-button").click()
+    cy.contains("New Blog").click()
+    cy.get("#title").type("Testtitle")
+    cy.get("#author").type("testauthor")
+    cy.get("#url").type("testurl09")
+    cy.get("#likes").type(5)
+    cy.get("#create").click()
+    cy.contains("Testtitle by testauthor", { timeout: 10000 })
+    cy.get("#cancel").click()
+    cy.contains("New Blog").click()
+    cy.get("#title").type("Second Blog")
+    cy.get("#author").type("Jack")
+    cy.get("#url").type("testurl78")
+    cy.get("#likes").type(15)
+    cy.get("#create").click()
+    cy.contains("Second Blog by Jack", { timeout: 10000 })
+    cy.get("#cancel").click()
+    cy.contains("New Blog").click()
+    cy.get("#title").type("Third Blog")
+    cy.get("#author").type("Nica")
+    cy.get("#url").type("testurl45")
+    cy.get("#likes").type(12)
+    cy.get("#create").click()
+    cy.contains("Third Blog by Nica", { timeout: 10000 })
+    cy.get(".blogStyle")
+      .find("#blog")
+      .then(blog => {
+        cy.wrap(blog[0])
+          .contains("View")
+          .click()
+          .get("#blogsarray")
+          .contains("Likes: 51512")
+      })
+  })
+})
+/*
+cy.get(".blogStyle")
+      .find("#blog")
+      .should("have.length", 3)*/
